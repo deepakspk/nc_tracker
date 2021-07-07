@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron">
+    <div class="row">
+
+      <div class="col-sm-12">
+        <h4 class="mb-5">Report</h4>
+
+        <!-- <div id="report-form" class="mb-2">
+          
+          <form
+            action="{% url 'ecm:find_report' %}"
+            method="get"
+          >
+            <input
+              name="stream"
+              id = "stream"
+              class="form-control mb-2"
+              placeholder="Stream"
+            />
+            <input
+              name="report_type"
+              id = "report_type"
+              class="form-control mb-2"
+              placeholder="Report type"
+            />
+            <button
+              class="btn btn-outline-success mb-3"
+              type="submit"
+            >
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
+      </div> -->
+
+
+        
+        <h5 class="text-danger"></h5>
+          <table class="table table-hover" id="table_id" >
+            <thead>
+              <tr>
+                <th scope="col">Branch</th>
+                <th scope="col">Step</th>
+                <th scope="col">Status</th>
+                <th scope="col">Note</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for i in report %}
+              <tr>
+                <td>{{i.item}} </td>
+                <td>{{i.step}} </td>
+                <td>{{i.status}} </td>
+                <td>{{i.note}}</td>
+              </tr>    
+            {% endfor %}
+          </tbody>
+          </table>      
+        </p>
+        </div>
+        </div>
+      </div>
+{% endblock %}

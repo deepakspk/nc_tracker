@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block content %}
+{% block css %}
+<link
+  href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+{% endblock %}
+<div class="jumbotron"> 
+        <h4 class="text-danger mb-2">Activities</h4>
+        <a class="btn btn-outline-info btn-sm mb-2" href="{% url 'ecm:activity_create' %}" role="button"><i class="fas fa-user-plus"> </i> Add new Activity</a>
+        <table class="table table-hover h-100 p-3" id="table_id" class="dispaly">
+          <thead>
+              <tr>
+                <th scope="col">SN</th>
+                <th scope="col">Item</th>
+                <th scope="col">Step</th>
+                <th scope="col">Status</th>
+                <th scope="col">Date</th>
+                <th scope="col">Note</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in activities %}
+              <tr>
+                <td scope="row">{{ forloop.counter }}</td>
+                <td> {{i.item }}</td>
+                <td> {{i.step }}</td>
+                <td> {{i.status}}</td>
+                <td> {{i.date}}</td>
+                <td> {{i.note}}</td>
+                <td> <a href="{% url 'ecm:activity_update' pk=i.pk  %}">EDIT | </a>
+                     <a href="{% url 'ecm:activity_delete' pk=i.pk  %}">DELETE </a>
+                </td>   
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+  </div>
+{% endblock %}
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#id_item').select2();
+    $('#id_stream').select2();
+    $('#id_step').select2();
+    $('#id_status').select2();
+  });
+</script>
+
+<script>
+  $("#id_item").change(function () { 
+    item = $("#id_item").val()
+    if (item != '') {
+      $('#id_stream').empty();
+      $.ajax({
+        url: '/report_call/',
+        data: {
+          'item': item
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data)
+          $("#id_stream").append(
+              $('<option>', {
+                value:'',
+                text: '',
+              }, '</option>'))
+          $.each(data, function (index, ste) {
+            
+            $("#id_stream").append(
+              $('<option>', {
+                value: ste['pk'],
+                text: ste['fields']['stream']
+              }, '</option>'))
+        })
+      }
+          })
+    }
+  })
+
+  $("#id_stream").change(function () {    
+    stream = $("#id_stream").val()
+    // console.log(stream)
+    if (stream != '') {
+      $('#id_step').empty();
+      $.ajax({
+        url: '/report_step/',
+        data: {
+          'stream': stream
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data)
+          $("#id_step").append(
+              $('<option>', {
+                value:'',
+                text: '',
+              }, '</option>'))
+          $.each(data, function (index, ste) {
+            $("#id_step").append(
+              $('<option>', {
+                value: ste['pk'],
+                text: ste['fields']['step']
+              }, '</option>'))
+        })
+      }
+          })
+    }
+  });
+
+
+  $("#id_step").change(function () {    
+    step = $("#id_step").val()
+    if (step != '') {
+      $('#id_status').empty();
+      $.ajax({
+        url: '/report_status/',
+        data: {
+          'step': step
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data)
+          $("#id_status").append(
+              $('<option>', {
+                value:'',
+                text: '',
+              }, '</option>'))
+          $.each(data, function (index, ste) {
+            $("#id_status").append(
+              $('<option>', {
+                value: ste['pk'],
+                text: ste['fields']['status']
+              }, '</option>'))
+        })
+      }
+          })
+    }
+  });
+
+</script>
+<script>
+  $(document).ready(function() {
+    $('#table_id').DataTable();
+  });
+</script>
+
+{% endblock %}

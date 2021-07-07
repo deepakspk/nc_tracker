@@ -1,0 +1,37 @@
+{% extends "base.html" %}{% block content %} {% load static %}
+<p></p>
+<div class="container-fluid">
+  <div class="jumbotron">
+    {% if form.errors %}
+    <p>Your username and password did'nt match, please try again.</p>
+    {% endif %}
+      <div class="row justify-content-center">
+        <div class="col-md-4 login-box">
+          <img class="mb-4 mt-2 justify-content-center" src="{% static 'images/NCMLogo.png' %}" alt="NCMlogo" width="120">
+          <h4 class="mb-3">Log in</h4>
+          <form method="POST" class="form-group">
+            {% csrf_token %}
+            <label for="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              placeholder="Enter your email"
+            />
+            <label for="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              placeholder="Enter your password"
+            />
+            <button type="submit" class="btn btn-outline-success btn-sm mt-2">Log in</button>
+          </form>
+          <!-- <a href="{% url 'accounts:password_reset' %}" class="btn btn-simple">
+            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div> Forget Password
+          </a> -->
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

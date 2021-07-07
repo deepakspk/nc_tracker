@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+{% block css %}
+<link
+  href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css"
+  rel="stylesheet"
+  type="text/css"
+/>
+{% endblock %}
+<div class="jumbotron">
+    <div class="row">
+      <div class="col-md-4">
+        <h4 class="mb-5">Add Activity</h4>
+        <form action="{% url 'ecm:activities' %}" method="POST">
+          {% csrf_token %} {{form.as_p}}
+          <input
+            type="submit"
+            class="btn btn-outline-success"
+            name="submit"
+            value="Submit"
+          />
+        </form>
+      </div>      
+    </div>
+  </div>
+{% endblock %}
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#id_item').select2();
+    $('#id_stream').select2();
+    $('#id_step').select2();
+    $('#id_status').select2();
+  });
+</script>
+
+<script>
+  $("#id_item").change(function () { 
+    item = $("#id_item").val()
+    if (item != '') {
+      $('#id_stream').empty();
+      $.ajax({
+        url: '/report_call/',
+        data: {
+          'item': item
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data)
+          $("#id_stream").append(
+              $('<option>', {
+                value:'',
+                text: '',
+              }, '</option>'))
+          $.each(data, function (index, ste) {
+            
+            $("#id_stream").append(
+              $('<option>', {
+                value: ste['pk'],
+                text: ste['fields']['stream']
+              }, '</option>'))
+        })
+      }
+          })
+    }
+  })
+
+  $("#id_stream").change(function () {    
+    stream = $("#id_stream").val()
+    // console.log(stream)
+    if (stream != '') {
+      $('#id_step').empty();
+      $.ajax({
+        url: '/report_step/',
+        data: {
+          'stream': stream
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data)
+          $("#id_step").append(
+              $('<option>', {
+                value:'',
+                text: '',
+              }, '</option>'))
+          $.each(data, function (index, ste) {
+            $("#id_step").append(
+              $('<option>', {
+                value: ste['pk'],
+                text: ste['fields']['step']
+              }, '</option>'))
+        })
+      }
+          })
+    }
+  });
+
+
+  $("#id_step").change(function () {    
+    step = $("#id_step").val()
+    if (step != '') {
+      $('#id_status').empty();
+      $.ajax({
+        url: '/report_status/',
+        data: {
+          'step': step
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data)
+          $("#id_status").append(
+              $('<option>', {
+                value:'',
+                text: '',
+              }, '</option>'))
+          $.each(data, function (index, ste) {
+            $("#id_status").append(
+              $('<option>', {
+                value: ste['pk'],
+                text: ste['fields']['status']
+              }, '</option>'))
+        })
+      }
+          })
+    }
+  });
+
+</script>
+
+{% endblock %}

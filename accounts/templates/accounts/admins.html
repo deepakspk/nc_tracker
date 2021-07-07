@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+    <div class="row">
+      <div class="col-md-4">
+        <h4 class="mb-5">Add Admin</h4>
+        <form action="{% url 'accounts:admins' %}" method="POST">
+          {% csrf_token %} {{form.as_p}}
+          <input
+            type="submit"
+            class="btn btn-outline-success"
+            name="submit"
+            value="Submit"
+          />
+        </form>
+      </div>
+      <div class="col-md-6 offset-2">
+        <h4 class="mb-5">Admins</h4>
+        {% for i in admins %}        
+        <p>
+            {{i.full_name}}
+         <br>
+          <small class="text-muted"><strong>{{i.phone}}</strong></small> |
+          <small class="text-muted mt-0">{{i.email}}</small> <br>
+          <a href="{% url 'accounts:admin_update' pk=i.pk  %}">EDIT | </a>
+          <a href="{% url 'accounts:admin_delete' pk=i.pk  %}">DELETE </a>
+        </p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

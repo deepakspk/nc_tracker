@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <h4 class="text-danger mb-3"> Details </h4>
+      <table class="table-hover">
+            <tbody>
+                <tr>
+                    <td>Name : </td>
+                    <td>{{ item_details.name}}</td>
+                </tr>
+                <tr>
+                    <td>Phone : </td>
+                    <td>{{item_details.phone}}</td>
+                </tr>
+                <tr>
+                    <td>Email : </td>
+                    <td>{{item_details.email}}</td>
+                </tr>
+                <tr>
+                    <td>Address : </td>
+                    <td>{{item_details.address}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    <h4 class="text-danger mt-5"> Notes </h4>
+        <hr>
+    {% if notes %}
+        {% for i in notes %}
+            <p>{{i.note}} <br>
+                <small class="text-muted">{{i.date}} | {{i.comment_by}} </small>
+            </p>
+        {% endfor %}
+    {%else %}
+    <p> No Notes </p>
+    {% endif %}   
+    
+
+    <h4 class="text-danger mt-5"> Activities </h4>
+    {% if activities %}
+      <table class="table table-hover">
+        <thead>
+            <tr>
+              <th scope="col">Step</th>
+              <th scope="col">status</th>
+              <th scope="col">Date</th>
+            </tr>
+        </thead>
+            <tbody>
+                {% for i in activities %}
+                <tr>
+                    <td>{{i.step }}</td>
+                    <td>{{i.status}}</td>
+                    <td>{{i.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {%else %}
+    <p> No IELTS </p>
+    {% endif %}
+    
+    <h4 class="text-danger mt-5"> Documents </h4>
+    {% if documents %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                <th scope="col">Document</th>
+                <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in documents %}
+                <tr>
+                    <td>{{i.document_type }}</td>
+                    <td><a href="{{i.document.url}}" target="_blank">
+                        <i class="fas fa-file-download"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {%else %}
+        <p> No Documents </p>
+    {% endif %}
+    
+
+    </div>
+{% endblock %}
+    

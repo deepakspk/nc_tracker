@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+    <div class="row">      
+      <div class="col-md-11">
+        <h4 class="text-danger mb-2">Streams</h4>
+        <a class="btn btn-outline-info btn-sm mb-3" href="{% url 'ecm:stream_create' %}" role="button"><i class="fas fa-user-plus"> </i> Add new Sream</a>
+        <table class="table table-hover h-100 p-3" id="table_id" class="dispaly">
+          <thead>
+            <tr>
+              <th scope="col">SN</th>
+              <th scope="col">Stream</th>
+              <th scope="col">Description</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in streams %}
+            <tr>
+              <td scope="row">{{ forloop.counter }}</td>
+              <td>{{i.stream }}</td>
+              <td>{{i.description }}</td>
+              <td>              
+                <a href="{% url 'ecm:stream_update' pk=i.pk %}"
+                  ><i class="fas fa-edit fa-lg"> | </i></a
+                >
+                <a href="{% url 'ecm:stream_delete' pk=i.pk %}">
+                  <i class="fas fa-trash-alt fa-lg"></i
+                ></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $('#table_id').DataTable();
+  });
+</script>
+{% endblock %}

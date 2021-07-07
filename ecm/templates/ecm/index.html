@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <h3 > Dashboard</h3>
+        <ol class="breadcrumb mb-4">
+        </ol>
+        <div class="row">
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <div class="card-body">All Branches</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-success text-white mb-4">
+                    <div class="card-body">All Good Branch</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-warning text-white mb-4">
+                    <div class="card-body"> Action Required
+                         </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-danger text-white mb-4">
+                    <div class="card-body">Having Issue</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+    <div class="jumbotron mt-5">
+        <div class="row">
+            <h4 class="mt-5"> Please Log in</h4>            
+        </div>
+    </div>
+    {% endif %}
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam cursus nisi a varius elementum. 
+        Fusce ac ante magna. Phasellus interdum maximus purus ut posuere. Aenean ante lectus, euismod vitae luctus et, vulputate ac libero.
+         Duis tincidunt dignissim auctor. Cras quis sagittis velit. Mauris ligula diam, interdum nec ex et, 
+         ultrices mattis orci. Praesent magna nibh, mattis vitae ligula ut, suscipit placerat urna.
+    </p>
+    
+{% endblock %}

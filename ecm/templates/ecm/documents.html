@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+{% block css %}
+{% endblock %}
+<div class="jumbotron">
+    <div class="row">
+      <div class="col-md-11">
+        <h4 class="text-danger mb-3">Documents</h4>
+        <a class="btn btn-outline-info btn-sm mb-3" href="{% url 'ecm:document_create' %}" role="button"><i class="fas fa-user-plus"> </i> Add new Document</a>
+         <table class="table table-hover h-100 p-3" id="table_id" class="dispaly">
+            <thead>
+              <tr>
+              <th scope="col">Item</th>
+              <th scope="col">Document type</th>
+              <th scope="col">Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for i in documents %}
+              <tr>
+                <td>{{i.item}}</td>
+                  <td>{{i.document_type }}</td>
+                  <td><a href="{{i.document.url}}" target="_blank"> DOWNLOAD</a> |
+                      <a href="{% url 'ecm:document_update' pk=i.pk  %}">EDIT | </a>
+                      <a href="{% url 'ecm:document_delete' pk=i.pk  %}">DELETE </a>
+                  </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $('#table_id').DataTable();
+  });
+</script>
+{% endblock %}

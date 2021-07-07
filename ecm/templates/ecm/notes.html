@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+      <h4 class="text-danger mb-2">Notes</h4>
+      <a class="btn btn-outline-info btn-sm mb-3" href="{% url 'ecm:note_create' %}" role="button"><i class="fas fa-user-plus"> </i> Add new Note</a>
+      <table class="table table-hover h-100 p-3" id="table_id" class="dispaly">
+        <thead>
+          <tr>
+            <th scope="col">SN</th>
+            <th scope="col">Item</th>
+            <th scope="col">Date</th>
+            <th scope="col">Noted by</th>
+            <th scope="col">Note</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in notes %}
+          <tr>
+            <td scope="row">{{ forloop.counter }}</td>
+            <td>{{i.item }}</td>
+            <td>{{i.date }}</td>
+            <td>{{i.comment_by }}</td>
+            <td>{{i.note }}</td>
+            <td>              
+              <a href="{% url 'ecm:note_update' pk=i.pk %}"
+                ><i class="fas fa-edit fa-lg"> | </i></a
+              >
+              <a href="{% url 'ecm:note_delete' pk=i.pk %}">
+                <i class="fas fa-trash-alt fa-lg"></i
+              ></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+{% endblock %}
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $('#table_id').DataTable();
+  });
+</script>
+{% endblock %}

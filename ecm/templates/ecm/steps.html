@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}{% block css %}
+{% endblock %}
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-md-11">
+        <h4 class="text-danger mb-2">Steps</h4>  
+        <a class="btn btn-outline-info btn-sm mb-5" href="{% url 'ecm:step_create' %}" role="button"><i class="fas fa-user-plus"> </i> Add new Sream</a>
+        <table class="table table-hover h-100 p-3" id="table_id" class="dispaly">
+          <thead>
+            <tr>
+              <th scope="col">SN</th>
+              <th scope="col">Step</th>
+              <th scope="col">Stream</th>
+              <th scope="col">Description</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in steps %}
+            <tr>
+              <td scope="row">{{ forloop.counter }}</td>
+              <td>{{i.step }}</td>
+              <td>{{i.stream }}</td>
+              <td>{{i.description }}</td>
+              <td>              
+                <a href="{% url 'ecm:step_update' pk=i.pk %}"
+                  ><i class="fas fa-edit fa-lg"> | </i></a
+                >
+                <a href="{% url 'ecm:step_delete' pk=i.pk %}">
+                  <i class="fas fa-trash-alt fa-lg"></i
+                ></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $('#table_id').DataTable();
+  });
+</script>
+{% endblock %}
