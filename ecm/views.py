@@ -7,12 +7,9 @@ from . import models
 from accounts.models import Admin
 import datetime
 from django.core import serializers
-from django.contrib.auth.mixins import LoginRequiredMixin
-
- 
+from django.contrib.auth.mixins import LoginRequiredMixin 
 
 # Create your views here.
-
 def index(request):
     return render(request,'ecm/index.html')
 
@@ -24,7 +21,6 @@ class ItemView(LoginRequiredMixin, ListView):
 
 class ItemCreateView(CreateView):
     template_name = 'ecm/item_create.html'
-    model = models.Item
     form_class = ItemForm
     success_url = reverse_lazy("ecm:items")
 
@@ -33,7 +29,6 @@ class ItemUpdateView(UpdateView):
     form_class = ItemForm
     template_name='ecm/item_update.html'
     success_url = reverse_lazy("ecm:items")
-
 
 class ItemDeleteView(DeleteView):
     model = models.Item
@@ -58,8 +53,9 @@ class StreamCreateView(CreateView):
 
 class StreamView(ListView):
     template_name = 'ecm/streams.html'
-    form_class = StreamForm
+    model = models.Stream
     context_object_name = 'streams'
+    ordering = ['-id']
 
 class StreamUpdateView(UpdateView):
     model = models.Stream
@@ -78,8 +74,9 @@ class StepCreateView(CreateView):
 
 class StepView(ListView):
     template_name = 'ecm/steps.html'
-    model = models.Activity
+    model = models.Step
     context_object_name = 'steps'
+    ordering = ['-id']
 
 class StepUpdateView(UpdateView):
     model = models.Step
@@ -100,13 +97,13 @@ class ActivityView(ListView):
     template_name = 'ecm/activities.html'
     context_object_name = 'activities'
     model = models.Activity
+    ordering = ['-id']
 
 class ActivityUpdateView(UpdateView):
     model = models.Activity
     form_class = ActivityForm
     template_name='ecm/activity_update.html'
     success_url = reverse_lazy("ecm:activities")
-
 
 class ActivityDeleteView(DeleteView):
     model = models.Activity
@@ -120,8 +117,8 @@ class StatusCreateView(CreateView):
 class StatusView(ListView):
     template_name = 'ecm/statuss.html'
     model = models.Status
-    form_class = StatusForm
     context_object_name = 'statuss'
+    ordering = ['-id']
 
 class StatusUpdateView(UpdateView):
     model = models.Status
@@ -136,25 +133,19 @@ class StatusDeleteView(DeleteView):
 class NoteCreateView(CreateView):
     template_name = 'ecm/note_create.html'
     form_class = NoteForm
-    success_url = reverse_lazy("ecm:notes")    
-
-class NoteView(ListView):
-    template_name = 'ecm/notes.html'
-    form_class = NoteForm
-    success_url = reverse_lazy("ecm:notes")
+    success_url = reverse_lazy("ecm:notes") 
 
     def form_valid(self, form_class):
         form_class.instance.date = datetime.date.today()
         emp = Admin.objects.get(user=self.request.user)
         form_class.instance.comment_by = emp
-        return super().form_valid(form_class)
+        return super().form_valid(form_class)   
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-        form = NoteForm()
-        notes = models.Note.objects.all().order_by('-id')
-        context['notes'] = notes      
-        return context
+class NoteView(ListView):
+    template_name = 'ecm/notes.html'
+    model = models.Note
+    context_object_name = 'notes'
+    ordering = ['-id']    
 
 class NoteUpdateView(UpdateView):
     model = models.Note
@@ -171,21 +162,11 @@ class DocumentCreateView(CreateView):
     form_class = DocumentForm
     success_url = reverse_lazy("ecm:documents")
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)        
-        return context
-
-class DocumentView(CreateView):
+class DocumentView(ListView):
     template_name = 'ecm/documents.html'
-    form_class = DocumentForm
-    success_url = reverse_lazy("ecm:documents")
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-        form = DocumentForm()
-        documents = models.Document.objects.all().order_by('-id')
-        context['documents'] = documents      
-        return context
+    model = models.Document
+    context_object_name = 'documents'
+    ordering = ['-id']
 
 class DocumentUpdateView(UpdateView):
     model = models.Document
@@ -197,7 +178,6 @@ class DocumentDeleteView(DeleteView):
     model = models.Document
     success_url = reverse_lazy("ecm:documents")
 
-
 class ReportView(ListView):
     template_name = 'ecm/report.html'
     context_object_name = 'report'
@@ -207,16 +187,13 @@ class ReportView(ListView):
         context = super(ReportView,self).get_context_data(*args, **kwargs)
         can = models.Stream.objects.all()
         context['can'] = can
-
         return context
 
 def findReport(request):
     report = models.Activity.objects.all()
     stream = request.GET.get('stream')
-
     if stream:
         report = report.filter(stream__stream = stream)
-
     return render(request, 'ecm/find_report.html', {'report':report})
 
 def report_call(request):

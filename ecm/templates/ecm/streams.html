@@ -4,7 +4,7 @@
     <div class="row">      
       <div class="col-md-11">
         <h4 class="text-danger mb-2">Streams</h4>
-        <a class="btn btn-outline-info btn-sm mb-3" href="{% url 'ecm:stream_create' %}" role="button"><i class="fas fa-user-plus"> </i> Add new Sream</a>
+        <a class="btn btn-outline-info btn-sm mb-3" href="{% url 'ecm:stream_create' %}" role="button"><i class="fas fa-plus"> </i> Add new Sream</a>
         <table class="table table-hover h-100 p-3" id="table_id" class="dispaly">
           <thead>
             <tr>
@@ -22,10 +22,10 @@
               <td>{{i.description }}</td>
               <td>              
                 <a href="{% url 'ecm:stream_update' pk=i.pk %}"
-                  ><i class="fas fa-edit fa-lg"> | </i></a
-                >
+                  ><i class="fas fa-edit fa-sm">  </i></a
+                  > | 
                 <a href="{% url 'ecm:stream_delete' pk=i.pk %}">
-                  <i class="fas fa-trash-alt fa-lg"></i
+                  <i class="fas fa-trash-alt fa-sm"></i
                 ></a>
               </td>
             </tr>

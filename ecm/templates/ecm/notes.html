@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="jumbotron">
+  <div class="row">
+    <div class="col-md-11">
       <h4 class="text-danger mb-2">Notes</h4>
-      <a class="btn btn-outline-info btn-sm mb-3" href="{% url 'ecm:note_create' %}" role="button"><i class="fas fa-user-plus"> </i> Add new Note</a>
+      <a class="btn btn-outline-info btn-sm mb-3" href="{% url 'ecm:note_create' %}" role="button"><i class="fas fa-plus"> </i> Add new Note</a>
       <table class="table table-hover h-100 p-3" id="table_id" class="dispaly">
         <thead>
           <tr>
@@ -24,16 +26,18 @@
             <td>{{i.note }}</td>
             <td>              
               <a href="{% url 'ecm:note_update' pk=i.pk %}"
-                ><i class="fas fa-edit fa-lg"> | </i></a
-              >
+                ><i class="fas fa-edit fa-sm">  </i></a
+                > | 
               <a href="{% url 'ecm:note_delete' pk=i.pk %}">
-                <i class="fas fa-trash-alt fa-lg"></i
+                <i class="fas fa-trash-alt fa-sm"></i
               ></a>
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
+    </div>
+  </div>
   </div>
 {% endblock %}
 {% block script %}

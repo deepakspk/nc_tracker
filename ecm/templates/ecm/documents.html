@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-md-11">
         <h4 class="text-danger mb-3">Documents</h4>
-        <a class="btn btn-outline-info btn-sm mb-3" href="{% url 'ecm:document_create' %}" role="button"><i class="fas fa-user-plus"> </i> Add new Document</a>
+        <a class="btn btn-outline-info btn-sm mb-3" href="{% url 'ecm:document_create' %}" role="button"><i class="fas fa-plus"> </i> Add new Document</a>
          <table class="table table-hover h-100 p-3" id="table_id" class="dispaly">
             <thead>
               <tr>
@@ -20,9 +20,11 @@
               <tr>
                 <td>{{i.item}}</td>
                   <td>{{i.document_type }}</td>
-                  <td><a href="{{i.document.url}}" target="_blank"> DOWNLOAD</a> |
-                      <a href="{% url 'ecm:document_update' pk=i.pk  %}">EDIT | </a>
-                      <a href="{% url 'ecm:document_delete' pk=i.pk  %}">DELETE </a>
+                  <td><a href="{{i.document.url}}" target="_blank"> <i class="fas fa-file-download fa-sm"></i></a> | <i class="fas fa-edit fa-sm">  </i></a
+                    > | 
+                  <a href="{% url 'ecm:step_delete' pk=i.pk %}">
+                    <i class="fas fa-trash-alt fa-sm"></i
+                  ></a>
                   </td>
               </tr>
               {% endfor %}

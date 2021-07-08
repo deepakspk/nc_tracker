@@ -12,8 +12,10 @@
 />
 {% endblock %}
 <div class="jumbotron"> 
+  <div class="row">
+    <div class="col-md-11">
         <h4 class="text-danger mb-2">Activities</h4>
-        <a class="btn btn-outline-info btn-sm mb-2" href="{% url 'ecm:activity_create' %}" role="button"><i class="fas fa-user-plus"> </i> Add new Activity</a>
+        <a class="btn btn-outline-info btn-sm mb-2" href="{% url 'ecm:activity_create' %}" role="button"><i class="fas fa-plus"> </i> Add new Activity</a>
         <table class="table table-hover h-100 p-3" id="table_id" class="dispaly">
           <thead>
               <tr>
@@ -35,13 +37,18 @@
                 <td> {{i.status}}</td>
                 <td> {{i.date}}</td>
                 <td> {{i.note}}</td>
-                <td> <a href="{% url 'ecm:activity_update' pk=i.pk  %}">EDIT | </a>
-                     <a href="{% url 'ecm:activity_delete' pk=i.pk  %}">DELETE </a>
+                <td> 
+                  <a href="{% url 'ecm:activity_update' pk=i.pk  %}"><i class="fas fa-edit fa-sm">  </i></a
+                    > | </a>
+                     <a href="{% url 'ecm:activity_delete' pk=i.pk  %}"><i class="fas fa-trash fa-sm">  </i></a
+                      > </a>
                 </td>   
               </tr>
               {% endfor %}
             </tbody>
         </table>
+      </div>
+    </div>
   </div>
 {% endblock %}
 {% block script %}

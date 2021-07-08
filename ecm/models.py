@@ -6,7 +6,6 @@ from accounts.models import Admin
 class Stream(models.Model):
     stream           = models.CharField(max_length=60, blank=False,null=True)
     description      = models.TextField(max_length=6000,null=True, blank=True)
-
     def __str__(self):
         return str(self.stream)
 
@@ -17,30 +16,20 @@ class Item (models.Model):
     phone               = models.BigIntegerField (null=True, blank=False)
     email               = models.EmailField(max_length=70, unique=True, blank=False,null=True)
     address             = models.CharField(max_length=290, null=True, blank=True)
-
     def __str__(self):
         return str(self.name)
-
-    @property
-    def full_name(self):
-        if (self.middle_name):
-            return str(self.first_name) +" "+str(self.middle_name)+' '+str(self.last_name)
-        else:
-            return str(self.first_name) +" "+str(self.last_name)
 
 
 class Step(models.Model):
     step             = models.CharField(max_length=60, blank=False,null=True)
     description      = models.TextField(max_length=6000, null=True, blank=True)
     stream           = models.ForeignKey(Stream, on_delete= models.CASCADE,related_name='step_stream')
-
     def __str__(self):
         return str(self.step)
 
 class Status(models.Model):
     step              = models.ForeignKey(Step, on_delete= models.CASCADE,related_name='status_step')
     status            = models.CharField(max_length=600, null=True, blank=False)
-
     def __str__(self):
         return str(self.status)
 
@@ -51,10 +40,8 @@ class Activity(models.Model):
     step            = models.ForeignKey(Step, on_delete= models.CASCADE,related_name='act_step')
     status           = models.ForeignKey(Status, on_delete= models.CASCADE,related_name='act_status')
     note            = models.TextField(max_length=600, null=True, blank=True)
-
-
     def __str__(self):
-        return str(self.item.full_name)
+        return str(self.item.name)
 
 
 class Note(models.Model):
@@ -62,7 +49,6 @@ class Note(models.Model):
     date            = models.DateField(null=True, blank=True)
     note            = models.TextField(max_length=600, null=True, blank=False)
     comment_by      = models.ForeignKey(Admin, on_delete= models.CASCADE,related_name='emp_comment',null=True, blank=True)  
-
     def __str__(self):
         return str(self.item)
 
@@ -75,7 +61,6 @@ class Document(models.Model):
     document_type    = models.CharField(max_length=110, choices=doc_type)
     title            = models.CharField(max_length=600, blank=False,null=True)
     document         = models.FileField(upload_to='documents/')
-
     def __str__(self):
         return str(self.document_type)
 
