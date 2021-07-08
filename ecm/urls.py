@@ -7,7 +7,7 @@ urlpatterns = [
     path('',views.index, name='index'),
     path('items/',views.ItemView.as_view(),name='items'),
     path('item_create/',views.ItemCreateView.as_view(),name='item_create'),
-    path('profile/<str:pk>/',views.ItemDetailView.as_view(),name='item_details'),
+    path('details/<str:pk>/',views.ItemDetailView.as_view(),name='item_details'),
     path('item/update/<str:pk>/',views.ItemUpdateView.as_view(),name='item_update'),
     path('item/delete/<str:pk>/',views.ItemDeleteView.as_view(),name='item_delete'),
 
@@ -47,5 +47,9 @@ urlpatterns = [
     path('report_call/',views.report_call,name='report_call'),
     path('report_step/',views.report_step,name='report_step'),
     path('report_status/',views.report_status,name='report_status'),
+
+    path('doctypes/',views.DoctypeView.as_view(),name='doctypes'),
+    path('doctype/update/<str:pk>/',views.DoctypeUpdateView.as_view(),name='doctype_update'),
+    path('doctype/delete/<str:pk>/',views.DoctypeDeleteView.as_view(),name='doctype_delete'),
 
 ]

@@ -1,9 +1,13 @@
 {% extends "base.html" %}
-
 {% block content %}
-
 <div class="row">
-    <h4 class="text-danger mb-3"> Details </h4>
+    <div class="row">
+        <div class="col-md-12">
+    <h4 class="text-danger mb-3"> Details 
+        <span>
+            <a class="btn btn-outline-info btn-sm" href="{% url 'ecm:item_update' pk=item_details.pk  %}"><i class="fas fa-edit fa-sm text-danger">  </i></a>
+        </span>
+    </h4>
       <table class="table-hover">
             <tbody>
                 <tr>
@@ -25,7 +29,12 @@
             </tbody>
         </table>
 
-    <h4 class="text-danger mt-5"> Notes </h4>
+    <h4 class="text-danger mt-5"> Notes 
+        <span>
+            <a class="btn btn-outline-info btn-sm" href="{% url 'ecm:note_create' %}?item={{item_details.pk}}" role="button"><i class="fas fa-plus"> </i></a>
+        </span>
+
+    </h4>
         <hr>
     {% if notes %}
         {% for i in notes %}
@@ -36,35 +45,14 @@
     {%else %}
     <p> No Notes </p>
     {% endif %}   
-    
 
-    <h4 class="text-danger mt-5"> Activities </h4>
-    {% if activities %}
-      <table class="table table-hover">
-        <thead>
-            <tr>
-              <th scope="col">Step</th>
-              <th scope="col">status</th>
-              <th scope="col">Date</th>
-            </tr>
-        </thead>
-            <tbody>
-                {% for i in activities %}
-                <tr>
-                    <td>{{i.step }}</td>
-                    <td>{{i.status}}</td>
-                    <td>{{i.date }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {%else %}
-    <p> No IELTS </p>
-    {% endif %}
-    
-    <h4 class="text-danger mt-5"> Documents </h4>
+    <h4 class="text-danger mt-5"> Documents 
+        <span>
+            <a class="btn btn-outline-info btn-sm" href="{% url 'ecm:document_create' %}?item={{item_details.pk}}" role="button"><i class="fas fa-plus"> </i></a>
+        </span>
+    </h4>
     {% if documents %}
-        <table class="table table-hover">
+    <table class="table table-hover" id="table_id2" >
             <thead>
                 <tr>
                 <th scope="col">Document</th>
@@ -87,6 +75,43 @@
     {% endif %}
     
 
+    <h4 class="text-danger mt-5"> Activities 
+        <span>
+            <a class="btn btn-outline-info btn-sm" href="{% url 'ecm:activity_create' %}?item={{item_details.pk}}" role="button"><i class="fas fa-plus"> </i></a>
+        </span>
+    </h4>
+    {% if activities %}
+    <table class="table table-hover" id="table_id" >
+        <thead>
+            <tr>
+              <th scope="col">Step</th>
+              <th scope="col">status</th>
+              <th scope="col">Date</th>
+            </tr>
+        </thead>
+            <tbody>
+                {% for i in activities %}
+                <tr>
+                    <td>{{i.step }}</td>
+                    <td>{{i.status}}</td>
+                    <td>{{i.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {%else %}
+    <p> No IELTS </p>
+    {% endif %}    
+        </div>
     </div>
+</div>
 {% endblock %}
-    
+
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $('#table_id').DataTable();
+    $('#table_id2').DataTable();
+  });
+</script>
+{% endblock %}

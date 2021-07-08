@@ -1,4 +1,4 @@
-from .models import Item, Stream, Step, Activity, Status, Note, Document
+from .models import Item, Stream, Step, Activity, Status, Note, Document, Doctype
 from django.forms import ModelForm, Form
 from django import forms
 from django.contrib.auth.models import User
@@ -43,9 +43,14 @@ class ActivityForm(ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({'class':'form-control'})
+         ne = None
+         if 'ne' in kwargs:
+            ne = kwargs.pop("ne")
+         super(ActivityForm, self).__init__(*args, **kwargs)
+         if ne:
+            self.fields['item'].queryset =  Item.objects.filter(pk = ne)
+         for field in self.fields:
+             self.fields[field].widget.attrs.update({'class':'form-control'})
 
 class StatusForm(ModelForm):
     class Meta:
@@ -66,9 +71,14 @@ class NoteForm(ModelForm):
             'date':forms.DateInput(attrs={'type':'date'})
         }
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({'class':'form-control'})
+         ne = None
+         if 'ne' in kwargs:
+            ne = kwargs.pop("ne")
+         super(NoteForm, self).__init__(*args, **kwargs)
+         if ne:
+            self.fields['item'].queryset =  Item.objects.filter(pk = ne)
+         for field in self.fields:
+             self.fields[field].widget.attrs.update({'class':'form-control'})
 
 class DocumentForm(ModelForm):
     class Meta:
@@ -76,6 +86,23 @@ class DocumentForm(ModelForm):
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
+         ne = None
+         if 'ne' in kwargs:
+            ne = kwargs.pop("ne")
+         super(DocumentForm, self).__init__(*args, **kwargs)
+         if ne:
+            self.fields['item'].queryset =  Item.objects.filter(pk = ne)
+         for field in self.fields:
+             self.fields[field].widget.attrs.update({'class':'form-control'})
+
+
+class DoctypeForm(ModelForm):
+    class Meta:
+        model= Doctype
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({'class':'form-control'})
+

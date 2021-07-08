@@ -20,7 +20,7 @@
           {% for i in notes %}
           <tr>
             <td scope="row">{{ forloop.counter }}</td>
-            <td>{{i.item }}</td>
+            <td><a href="{% url 'ecm:item_details' pk=i.item.pk  %}">{{i.item }}</a></td>
             <td>{{i.date }}</td>
             <td>{{i.comment_by }}</td>
             <td>{{i.note }}</td>

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.http import HttpResponse
-from . forms import ItemForm, StreamForm, StepForm, ActivityForm, StatusForm, NoteForm, DocumentForm
+from . forms import ItemForm, StreamForm, StepForm, ActivityForm, StatusForm, NoteForm, DocumentForm, DoctypeForm
 from . import models
 from accounts.models import Admin
 import datetime
@@ -93,6 +93,12 @@ class ActivityCreateView(CreateView):
     form_class = ActivityForm
     success_url = reverse_lazy("ecm:activities")
 
+    def get_form_kwargs(self):
+        kwargs = super(ActivityCreateView,self).get_form_kwargs()
+        if self.request.GET.get('item'):
+            kwargs['ne'] = self.request.GET['item']
+        return kwargs
+
 class ActivityView(ListView):
     template_name = 'ecm/activities.html'
     context_object_name = 'activities'
@@ -139,7 +145,15 @@ class NoteCreateView(CreateView):
         form_class.instance.date = datetime.date.today()
         emp = Admin.objects.get(user=self.request.user)
         form_class.instance.comment_by = emp
-        return super().form_valid(form_class)   
+        return super().form_valid(form_class)  
+    
+    def get_form_kwargs(self):
+        kwargs = super(NoteCreateView,self).get_form_kwargs()
+        if self.request.GET.get('item'):
+            kwargs['ne'] = self.request.GET['item']
+        return kwargs
+
+     
 
 class NoteView(ListView):
     template_name = 'ecm/notes.html'
@@ -161,6 +175,12 @@ class DocumentCreateView(CreateView):
     template_name = 'ecm/document_create.html'
     form_class = DocumentForm
     success_url = reverse_lazy("ecm:documents")
+
+    def get_form_kwargs(self):
+        kwargs = super(DocumentCreateView,self).get_form_kwargs()
+        if self.request.GET.get('item'):
+            kwargs['ne'] = self.request.GET['item']
+        return kwargs
 
 class DocumentView(ListView):
     template_name = 'ecm/documents.html'
@@ -216,3 +236,28 @@ def report_status(request):
     status = models.Status.objects.filter(step__pk=obj.pk)
     qs = serializers.serialize('json',status)
     return HttpResponse(qs)
+
+
+class DoctypeView(CreateView):
+    template_name = 'ecm/doctypes.html'
+    form_class = DoctypeForm
+    success_url = reverse_lazy("ecm:doctypes")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = DoctypeForm()
+        doctypes = models.Doctype.objects.all().order_by('-id')
+        context['doctypes'] = doctypes      
+        return context
+
+
+class DoctypeUpdateView(UpdateView):
+    model = models.Doctype
+    form_class = DoctypeForm
+    template_name='ecm/doctype_update.html'
+    success_url = reverse_lazy("ecm:doctypes")
+
+
+class DoctypeDeleteView(DeleteView):
+    model = models.Doctype
+    success_url = reverse_lazy("ecm:doctypes")

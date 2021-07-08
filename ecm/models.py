@@ -52,15 +52,21 @@ class Note(models.Model):
     def __str__(self):
         return str(self.item)
 
+class Doctype(models.Model):
+    name             = models.CharField(max_length=600, blank=False,null=True)
+    description      = models.TextField(max_length=6000,null=True, blank=True)
+    def __str__(self):
+        return str(self.name)
+
+        
 class Document(models.Model):
     item             = models.ForeignKey(Item, on_delete= models.CASCADE,related_name='doc_can')
-    doc_type         = (('Rental Agreement', 'Rental Agreement'),
-                        ('Expense Receipt', 'Expense Receipt'),
-                        ('CV', 'CV'),
-                        ('Visa', 'Visa'))
-    document_type    = models.CharField(max_length=110, choices=doc_type)
+    document_type    = models.ForeignKey(Doctype, on_delete= models.CASCADE,related_name='doc_type')
     title            = models.CharField(max_length=600, blank=False,null=True)
     document         = models.FileField(upload_to='documents/')
     def __str__(self):
         return str(self.document_type)
+
+
+
 

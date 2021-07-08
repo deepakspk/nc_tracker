@@ -18,7 +18,7 @@
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="{% url 'ecm:index' %}">Nepal Can</a>
             <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars text-light"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <!-- <div class="input-group">
@@ -80,12 +80,12 @@
                                 Reports
                             </a>
                             <a class="nav-link" href="{% url 'accounts:admins' %}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                                 Users
                             </a>
                             
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSettings" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
                                 Settings
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
@@ -94,11 +94,9 @@
                                     <a class="nav-link" href="{% url 'ecm:streams' %}">Streams</a>
                                     <a class="nav-link" href="{% url 'ecm:steps' %}">Steps</a>
                                     <a class="nav-link" href="{% url 'ecm:statuss' %}">Status</a>
+                                    <a class="nav-link" href="{% url 'ecm:doctypes' %}">Document Type</a>
                                 </nav>
-                            </div>
-                            
-                            
-
+                            </div>      
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
