@@ -14,12 +14,12 @@
 <div class="jumbotron">
     <div class="row">
       <div class="col-md-4">
-        <h4 class="mb-5">Add Activity</h4>
+        <h4 class="text-danger mb-3">Add Activity</h4>
         <form action="{% url 'ecm:activity_create' %}" method="POST">
           {% csrf_token %} {{form.as_p}}
           <input
             type="submit"
-            class="btn btn-outline-success"
+            class="btn btn-outline-success btn-sm"
             name="submit"
             value="Submit"
           />
@@ -30,12 +30,13 @@
 {% endblock %}
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script>  
   $(document).ready(function () {
-    $('#id_item').select2();
-    $('#id_stream').select2();
-    $('#id_step').select2();
-    $('#id_status').select2();
-  });
+      $('#id_item').select2();
+      $('#id_stream').select2();
+      $('#id_step').select2();
+      $('#id_status').select2();
+    });
 </script>
 
 <script>

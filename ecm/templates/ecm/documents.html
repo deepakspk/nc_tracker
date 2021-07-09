@@ -20,9 +20,12 @@
               <tr>
                 <td><a href="{% url 'ecm:item_details' pk=i.item.pk  %}">{{i.item}}</a></td>
                   <td>{{i.document_type }}</td>
-                  <td><a href="{{i.document.url}}" target="_blank"> <i class="fas fa-file-download fa-sm"></i></a> | <i class="fas fa-edit fa-sm">  </i></a
-                    > | 
-                  <a href="{% url 'ecm:step_delete' pk=i.pk %}">
+                  <td><a href="{{i.document.url}}" target="_blank"> 
+                    <i class="fas fa-file-download fa-sm"></i></a> |
+                    <a href="{% url 'ecm:document_update' pk=i.pk %}">
+                      <i class="fas fa-edit fa-sm"></i
+                    ></a> |
+                  <a href="{% url 'ecm:document_delete' pk=i.pk %}">
                     <i class="fas fa-trash-alt fa-sm"></i
                   ></a>
                   </td>
