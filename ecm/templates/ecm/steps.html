@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-md-11">
         <h4 class="text-danger mb-2">Steps</h4>  
-        <a class="btn btn-outline-info btn-sm mb-5" href="{% url 'ecm:step_create' %}" role="button"><i class="fas fa-plus"> </i> Add new Sream</a>
+        <a class="btn btn-outline-info btn-sm mb-5" href="{% url 'ecm:step_create' %}" role="button"><i class="fas fa-plus"> </i> Add Step</a>
         <table class="table table-hover" id="table_id">
           <thead>
             <tr>
@@ -21,8 +21,7 @@
             {% for i in steps %}
             <tr>
               <td scope="row">{{ forloop.counter }}</td>
-              <td>{{i.step }}</td>
-              <td>{{i.stream }}</td>
+              <td>{{i.stream }}</td>                           
               <td>{{i.description }}</td>
               <td>              
                 <a href="{% url 'ecm:step_update' pk=i.pk %}"

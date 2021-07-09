@@ -2,7 +2,7 @@
 {% block content %}
 <div class="jumbotron">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <h4 class="text-danger mb-5">Add Document Type</h4>
         <form action="{% url 'ecm:doctypes' %}" method="POST">
           {% csrf_token %} {{form.as_p}}
@@ -14,7 +14,7 @@
           />
         </form>
       </div>
-      <div class="col-md-7">
+      <div class="col-md-7 offset-md-1">
         <h4 class="text-danger mb-5">Document Types</h4>
         <table class="table table-hover" id="table_id" >
           <thead>

@@ -47,9 +47,13 @@ urlpatterns = [
     path('report_call/',views.report_call,name='report_call'),
     path('report_step/',views.report_step,name='report_step'),
     path('report_status/',views.report_status,name='report_status'),
+    path('status_call/',views.status_call,name='status_call'),
 
     path('doctypes/',views.DoctypeView.as_view(),name='doctypes'),
     path('doctype/update/<str:pk>/',views.DoctypeUpdateView.as_view(),name='doctype_update'),
     path('doctype/delete/<str:pk>/',views.DoctypeDeleteView.as_view(),name='doctype_delete'),
 
+    path('usergroups_create/',views.UserGroupView.as_view(),name='usergroups_create'),
+    path('usergroup/update/<str:pk>/',views.UserGroupUpdateView.as_view(),name='usergroup_update'),
+    path('usergroup/delete/<str:pk>/',views.UserGroupDeleteView.as_view(),name='usergroup_delete'),
 ]

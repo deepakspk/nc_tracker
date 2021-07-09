@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.http import HttpResponse
-from . forms import ItemForm, StreamForm, StepForm, ActivityForm, StatusForm, NoteForm, DocumentForm, DoctypeForm
+from . forms import ItemForm, StreamForm, StepForm, ActivityForm, StatusForm, NoteForm, DocumentForm, DoctypeForm, UserGroupForm
 from . import models
 from accounts.models import Admin
 import datetime
@@ -49,7 +49,14 @@ class ItemDetailView(DetailView):
 class StreamCreateView(CreateView):
     template_name = 'ecm/stream_create.html'
     form_class = StreamForm
-    success_url = reverse_lazy("ecm:streams")
+    success_url = reverse_lazy("ecm:stream_create")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = StreamForm()
+        streams = models.Stream.objects.all().order_by('-id')
+        context['streams'] = streams      
+        return context
 
 class StreamView(ListView):
     template_name = 'ecm/streams.html'
@@ -61,16 +68,23 @@ class StreamUpdateView(UpdateView):
     model = models.Stream
     form_class = StreamForm
     template_name='ecm/stream_update.html'
-    success_url = reverse_lazy("ecm:streams")
+    success_url = reverse_lazy("ecm:stream_create")
 
 class StreamDeleteView(DeleteView):
     model = models.Stream
-    success_url = reverse_lazy("ecm:streams")
+    success_url = reverse_lazy("ecm:stream_create")
 
 class StepCreateView(CreateView):
     template_name = 'ecm/step_create.html'
     form_class = StepForm
-    success_url = reverse_lazy("ecm:steps")
+    success_url = reverse_lazy("ecm:step_create")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = StepForm()
+        steps = models.Step.objects.all().order_by('-id')
+        context['steps'] = steps      
+        return context
 
 class StepView(ListView):
     template_name = 'ecm/steps.html'
@@ -82,11 +96,11 @@ class StepUpdateView(UpdateView):
     model = models.Step
     form_class = StepForm
     template_name='ecm/step_update.html'
-    success_url = reverse_lazy("ecm:steps")
+    success_url = reverse_lazy("ecm:step_create")
 
 class StepDeleteView(DeleteView):
     model = models.Step
-    success_url = reverse_lazy("ecm:streams")
+    success_url = reverse_lazy("ecm:step_create")
         
 class ActivityCreateView(CreateView):
     template_name = 'ecm/activity_create.html'
@@ -118,7 +132,14 @@ class ActivityDeleteView(DeleteView):
 class StatusCreateView(CreateView):
     template_name = 'ecm/status_create.html'
     form_class = StatusForm
-    success_url = reverse_lazy("ecm:statuss")
+    success_url = reverse_lazy("ecm:status_create")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = StatusForm()
+        statuss = models.Status.objects.all().order_by('-id')
+        context['statuss'] = statuss      
+        return context
 
 class StatusView(ListView):
     template_name = 'ecm/statuss.html'
@@ -130,11 +151,11 @@ class StatusUpdateView(UpdateView):
     model = models.Status
     form_class = StatusForm
     template_name='ecm/status_update.html'
-    success_url = reverse_lazy("ecm:statuss")
+    success_url = reverse_lazy("ecm:status_create")
 
 class StatusDeleteView(DeleteView):
     model = models.Status
-    success_url = reverse_lazy("ecm:statuss")
+    success_url = reverse_lazy("ecm:status_create")
 
 class NoteCreateView(CreateView):
     template_name = 'ecm/note_create.html'
@@ -237,6 +258,13 @@ def report_status(request):
     qs = serializers.serialize('json',status)
     return HttpResponse(qs)
 
+def status_call(request):
+    stream = request.GET.get('stream', None)
+    obj = models.Stream.objects.get(pk = stream)
+    step = models.Step.objects.filter(stream=obj.pk)
+    qs = serializers.serialize('json',step)
+    return HttpResponse(qs)
+
 
 class DoctypeView(CreateView):
     template_name = 'ecm/doctypes.html'
@@ -261,3 +289,27 @@ class DoctypeUpdateView(UpdateView):
 class DoctypeDeleteView(DeleteView):
     model = models.Doctype
     success_url = reverse_lazy("ecm:doctypes")
+
+class UserGroupView(CreateView):
+    template_name = 'ecm/usergroups_create.html'
+    form_class = UserGroupForm
+    success_url = reverse_lazy("ecm:usergroups_create")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = UserGroupForm()
+        usergroups = models.UserGroup.objects.all().order_by('-id')
+        context['usergroups'] = usergroups      
+        return context
+
+
+class UserGroupUpdateView(UpdateView):
+    model = models.UserGroup
+    form_class = UserGroupForm
+    template_name='ecm/doctype_update.html'
+    success_url = reverse_lazy("ecm:usergroups_create")
+
+
+class UserGroupDeleteView(DeleteView):
+    model = models.UserGroup
+    success_url = reverse_lazy("ecm:usergroups_create")

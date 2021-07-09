@@ -21,13 +21,14 @@ class Item (models.Model):
 
 
 class Step(models.Model):
-    step             = models.CharField(max_length=60, blank=False,null=True)
-    description      = models.TextField(max_length=6000, null=True, blank=True)
     stream           = models.ForeignKey(Stream, on_delete= models.CASCADE,related_name='step_stream')
+    step             = models.CharField(max_length=60, blank=False,null=True)
+    description      = models.TextField(max_length=6000, null=True, blank=True)    
     def __str__(self):
         return str(self.step)
 
 class Status(models.Model):
+    stream            = models.ForeignKey(Stream, on_delete= models.CASCADE,related_name='status_stream')
     step              = models.ForeignKey(Step, on_delete= models.CASCADE,related_name='status_step')
     status            = models.CharField(max_length=600, null=True, blank=False)
     def __str__(self):
@@ -67,6 +68,13 @@ class Document(models.Model):
     def __str__(self):
         return str(self.document_type)
 
+
+class UserGroup(models.Model):
+    user_group      = models.CharField(max_length=100, unique=True)
+    user            = models.ManyToManyField(Admin)
+    
+    def __str__(self):
+        return self.user_group
 
 
 

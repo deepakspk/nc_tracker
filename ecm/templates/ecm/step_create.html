@@ -13,8 +13,8 @@
 {% endblock %}
   <div class="jumbotron">
     <div class="row">
-      <div class="col-md-6">
-        <h4 class="mb-5">Add Step</h4>
+      <div class="col-md-3">
+        <h4 class="text-danger mb-3">Add Step</h4>
         <form action="{% url 'ecm:step_create' %}" method="POST">
           {% csrf_token %} {{form.as_p}}
           <input
@@ -24,7 +24,39 @@
             value="Submit"
           />
         </form>
-      </div>      
+      </div> 
+      <div class="col-md-7 offset-md-1">
+        <h4 class="text-danger mb-3">Steps</h4>  
+        <table class="table table-hover" id="table_id">
+          <thead>
+            <tr>
+              <th scope="col">SN</th>
+              <th scope="col">Stream</th>
+              <th scope="col">step</th>
+              <th scope="col">Description</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in steps %}
+            <tr>
+              <td scope="row">{{ forloop.counter }}</td>
+              <td>{{i.stream }}</td>
+              <td><strong>{{i.step}}</strong></td> 
+              <td>{{i.description }}</td>
+              <td>              
+                <a href="{% url 'ecm:step_update' pk=i.pk %}"
+                  ><i class="fas fa-edit fa-sm">  </i></a
+                  > | 
+                <a href="{% url 'ecm:step_delete' pk=i.pk %}">
+                  <i class="fas fa-trash-alt fa-sm"></i
+                ></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>     
     </div>
   </div>
 {% endblock %}
@@ -33,6 +65,7 @@
 <script>
   $(document).ready(function () {
     $('#id_stream').select2();
+    $('#table_id').DataTable();
   });
 </script>
 {% endblock %}

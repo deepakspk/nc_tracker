@@ -1,4 +1,4 @@
-from .models import Item, Stream, Step, Activity, Status, Note, Document, Doctype
+from .models import Item, Stream, Step, Activity, Status, Note, Document, Doctype, UserGroup
 from django.forms import ModelForm, Form
 from django import forms
 from django.contrib.auth.models import User
@@ -99,6 +99,16 @@ class DocumentForm(ModelForm):
 class DoctypeForm(ModelForm):
     class Meta:
         model= Doctype
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class':'form-control'})
+
+class UserGroupForm(ModelForm):
+    class Meta:
+        model= UserGroup
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
