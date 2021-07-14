@@ -10,19 +10,23 @@
           <table class="table table-hover" id="table_id" >
             <thead>
               <tr>
-                <th scope="col">Branch</th>
-                <th scope="col">Step</th>
-                <th scope="col">Status</th>
-                <th scope="col">Note</th>
+                <th scope="col">Item</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Address</th>
               </tr>
             </thead>
             <tbody>
             {% for i in report %}
               <tr>
-                <td>{{i.item}} </td>
-                <td>{{i.step}} </td>
-                <td>{{i.status}} </td>
-                <td>{{i.note}}</td>
+                <td>
+                  <a href="{% url 'ecm:item_details' pk=i.pk %}">
+                  {{i.name}} 
+                  </a>
+                </td>
+                <td>{{i.phone}} </td>
+                <td>{{i.email}} </td>
+                <td>{{i.address}}</td>
               </tr>    
             {% endfor %}
           </tbody>

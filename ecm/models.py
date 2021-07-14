@@ -23,6 +23,7 @@ class Item (models.Model):
     phone               = models.BigIntegerField (null=True, blank=False)
     email               = models.EmailField(max_length=70, unique=True, blank=False,null=True)
     address             = models.CharField(max_length=290, null=True, blank=True)
+    description         = models.TextField(max_length=6000, null=True, blank=True)  
     def __str__(self):
         return str(self.name)
 

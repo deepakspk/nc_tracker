@@ -231,7 +231,7 @@ class ReportView(ListView):
         return context
 
 def findReport(request):
-    report = models.Activity.objects.all()
+    report = models.Item.objects.all()
     stream = request.GET.get('stream')
     if stream:
         report = report.filter(stream__stream = stream)
