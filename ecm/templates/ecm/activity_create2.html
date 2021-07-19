@@ -15,7 +15,7 @@
     <div class="row">
       <div class="col-md-4">
         <h4 class="text-danger mb-3">Add Activity</h4>
-        <form action="{% url 'ecm:activity_create' %}?item={{item.pk}}&stream={{stream.pk}}&step={{step.pk}}" method="POST">
+        <form action="{% url 'ecm:activity_create2' %}?item={{item}}&stream={{stream}}" method="POST">
           {% csrf_token %} {{form.as_p}}
           <input
             type="submit"

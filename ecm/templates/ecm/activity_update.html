@@ -2,7 +2,7 @@
 <div class="jumbotron">    
     <div class="row">
     <div class="col-md-4">
-      <h4 class="mb-5">Update Activities</h4>
+      <h4 class="text-danger mb-5">Update Activities</h4>
       <form method="POST" enctype="multipart/form-data" >
         {% csrf_token %} {{form.as_p}}
         <input

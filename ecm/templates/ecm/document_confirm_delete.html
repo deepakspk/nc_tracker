@@ -3,12 +3,9 @@
   <form method="post">
     {% csrf_token %}
     <input type="submit" class="btn btn-outline-danger" value="Delete" />
-    <a
-      class="btn btn-outline-primary"
-      href="{% url 'ecm:documents'%}"
-      role="button"
-      >Cancel</a
-    >
+    <a href="javascript:history.back()"
+      class="btn btn-outline-primary">Cancel
+    </a>
   </form>
 </div>
 {% endblock %}

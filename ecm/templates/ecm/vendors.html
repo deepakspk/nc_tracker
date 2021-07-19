@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron">
+    <div class="row">
+
+      <div class="col-sm-12">
+        <h4 class="text-danger mb-5">Employee Onbording
+          <span>
+            <a class="btn btn-outline-dark btn-sm" href="#"> Matrix Report (Dummy Btn)</a>
+          </span>
+        </h4>
+        <h5 class="text-danger"></h5>
+          <table class="table table-hover" id="table_id" >
+            <thead>
+              <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Dummy data</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for i in vendors %}
+              <tr>
+                <td>
+                  <a href="{% url 'ecm:item_details' pk=i.pk %}">{{i.name}}</strong>
+                  </a>
+                </td>
+                <td>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{can}}</div>
+                  </div>
+                </td>
+                <td>              
+                  <a href="{% url 'ecm:item_update' pk=i.pk %}"
+                    ><i class="fas fa-edit fa-sm">  </i></a
+                    > | 
+                  <a href="{% url 'ecm:item_delete' pk=i.pk %}">
+                    <i class="fas fa-trash-alt fa-sm"></i
+                  ></a>
+                </td>
+              </tr>    
+            {% endfor %}
+          </tbody>
+          </table>      
+        </p>
+        </div>
+        </div>
+      </div>
+{% endblock %}
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $('#table_id').DataTable();
+  });
+</script>
+{% endblock %}

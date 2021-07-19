@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-from django.http import HttpResponse
-from . forms import ItemForm, StreamForm, StepForm, ActivityForm, StatusForm, NoteForm, DocumentForm, DoctypeForm, UserGroupForm
+from django.http import HttpResponse, HttpResponseRedirect
+from . forms import ItemForm, StreamForm, StepForm, ActivityForm, ActivityForm2, ActivityForm3, StatusForm, NoteForm, DocumentForm, DoctypeForm, UserGroupForm
 from . import models
 from accounts.models import Admin
 import datetime
@@ -10,8 +10,35 @@ from django.core import serializers
 from django.contrib.auth.mixins import LoginRequiredMixin 
 
 # Create your views here.
-def index(request):
-    return render(request,'ecm/index.html')
+
+class StreamListView(LoginRequiredMixin, ListView):
+    template_name = 'ecm/index.html'
+    context_object_name = 'streams'
+    model = models.Stream
+
+class EmployeeListView(LoginRequiredMixin, ListView):
+    template_name = 'ecm/employees.html'
+    context_object_name = 'employees'
+    queryset = models.Item.objects.filter(stream__stream ='EMPLOYEE ONBOARDING')
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(EmployeeListView,self).get_context_data(*args, **kwargs)
+        can = models.Step.objects.filter(stream__stream ='EMPLOYEE ONBOARDING').count()
+        stp = models.Activity.objects.filter(stream__stream ='EMPLOYEE ONBOARDING', status__status="Complete").count()
+        context['can'] = can
+        context['stp'] = stp
+        return context
+
+class BranchListView(LoginRequiredMixin, ListView):
+    template_name = 'ecm/branches.html'
+    context_object_name = 'branches'
+    queryset = models.Item.objects.filter(stream__stream ='BRANCH ONBOARDING')
+
+class VendorListView(LoginRequiredMixin, ListView):
+    template_name = 'ecm/vendors.html'
+    context_object_name = 'vendors'
+    queryset = models.Item.objects.filter(stream__stream ='TEST - VENDOR ONBOARDING')
+
 
 class ItemView(LoginRequiredMixin, ListView):
     template_name = 'ecm/items.html'
@@ -22,13 +49,25 @@ class ItemView(LoginRequiredMixin, ListView):
 class ItemCreateView(CreateView):
     template_name = 'ecm/item_create.html'
     form_class = ItemForm
-    success_url = reverse_lazy("ecm:items")
+
+    def get_form_kwargs(self):
+        kwargs = super(ItemCreateView,self).get_form_kwargs()       
+        if self.request.GET.get('stream'):
+            kwargs['stream'] = self.request.GET['stream']        
+        return kwargs
+    
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.pk})
+    
 
 class ItemUpdateView(UpdateView):
     model = models.Item
     form_class = ItemForm
     template_name='ecm/item_update.html'
-    success_url = reverse_lazy("ecm:items")
+
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.pk})
+
 
 class ItemDeleteView(DeleteView):
     model = models.Item
@@ -41,9 +80,17 @@ class ItemDetailView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
+        ste = []
         context['activities'] = models.Activity.objects.filter(item=self.object).order_by('-id')
         context['notes'] = models.Note.objects.filter(item=self.object).order_by('-id')
         context['documents'] = models.Document.objects.filter(item=self.object).order_by('-id')
+
+        for s in models.Step.objects.filter(stream=self.object.stream):
+            
+            act = models.Activity.objects.filter(step = s, item__pk=self.object.pk).order_by('-id')
+            ste.append([s, act])
+        
+        context['steps'] = ste
         return context
 
 class StreamCreateView(CreateView):
@@ -107,11 +154,76 @@ class ActivityCreateView(CreateView):
     form_class = ActivityForm
     success_url = reverse_lazy("ecm:activities")
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = ActivityForm()
+        if self.request.GET.get('item'):
+            item = models.Item.objects.get(pk=self.request.GET['item'])
+            context['item'] = item
+        if self.request.GET.get('stream'):
+            stream = models.Stream.objects.get(pk=self.request.GET['stream'])
+            context['stream'] = stream
+        if self.request.GET.get('step'):
+            step = models.Step.objects.get(pk=self.request.GET['step'])
+            context['step'] = step
+        return context
+
+    def form_valid(self, form_class):
+        if self.request.GET.get('item'):
+            item = models.Item.objects.get(pk=self.request.GET['item'])
+            form_class.instance.item = item
+        if self.request.GET.get('stream'):
+            stream = models.Stream.objects.get(pk=self.request.GET['stream'])
+            form_class.instance.stream = stream
+        if self.request.GET.get('step'):
+            step = models.Step.objects.get(pk=self.request.GET['step'])
+            form_class.instance.step = step
+        return super().form_valid(form_class)
+
     def get_form_kwargs(self):
         kwargs = super(ActivityCreateView,self).get_form_kwargs()
         if self.request.GET.get('item'):
-            kwargs['ne'] = self.request.GET['item']
-        return kwargs
+            kwargs['item'] = self.request.GET['item']
+        if self.request.GET.get('stream'):
+            kwargs['stream'] = self.request.GET['stream']
+        if self.request.GET.get('step'):
+            kwargs['step'] = self.request.GET['step']        
+        return kwargs    
+
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.item.pk})
+
+class ActivityCreateView2(CreateView):
+    template_name = 'ecm/activity_create2.html'
+    form_class = ActivityForm3
+    success_url = reverse_lazy("ecm:activities2")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.GET.get('item'):
+            context['item'] = self.request.GET.get('item')            
+        if self.request.GET.get('stream'):            
+            context['stream'] = self.request.GET.get('stream')      
+        return context
+
+    def form_valid(self, form_class):
+        if self.request.GET.get('item'):
+            item = models.Item.objects.get(pk=self.request.GET['item'])
+            form_class.instance.item = item
+        if self.request.GET.get('stream'):
+            stream = models.Stream.objects.get(pk=self.request.GET['stream'])
+            form_class.instance.stream = stream        
+        return super().form_valid(form_class)
+
+    def get_form_kwargs(self):
+        kwargs = super(ActivityCreateView2,self).get_form_kwargs()       
+        if self.request.GET.get('stream'):
+            kwargs['stream'] = self.request.GET['stream']        
+        return kwargs    
+
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.item.pk})
 
 class ActivityView(ListView):
     template_name = 'ecm/activities.html'
@@ -123,11 +235,35 @@ class ActivityUpdateView(UpdateView):
     model = models.Activity
     form_class = ActivityForm
     template_name='ecm/activity_update.html'
-    success_url = reverse_lazy("ecm:activities")
+
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.item.pk})
+
+
+class ActivityUpdateView2(UpdateView):
+    model = models.Activity
+    form_class = ActivityForm2
+    template_name='ecm/activity_update2.html'
+
+    def get_form_kwargs(self):
+        kwargs = super(ActivityUpdateView2,self).get_form_kwargs()
+        if self.request.GET.get('stream'):
+            kwargs['stream'] = self.request.GET['stream']
+        if self.request.GET.get('step'):
+            kwargs['step'] = self.request.GET['step']
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.item.pk})
+
+
 
 class ActivityDeleteView(DeleteView):
     model = models.Activity
     success_url = reverse_lazy("ecm:activities")
+
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.item.pk})
 
 class StatusCreateView(CreateView):
     template_name = 'ecm/status_create.html'
@@ -160,7 +296,6 @@ class StatusDeleteView(DeleteView):
 class NoteCreateView(CreateView):
     template_name = 'ecm/note_create.html'
     form_class = NoteForm
-    success_url = reverse_lazy("ecm:notes") 
 
     def form_valid(self, form_class):
         form_class.instance.date = datetime.date.today()
@@ -172,7 +307,10 @@ class NoteCreateView(CreateView):
         kwargs = super(NoteCreateView,self).get_form_kwargs()
         if self.request.GET.get('item'):
             kwargs['ne'] = self.request.GET['item']
-        return kwargs
+        return kwargs  
+
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.item.pk})      
 
      
 
@@ -188,9 +326,14 @@ class NoteUpdateView(UpdateView):
     template_name='ecm/note_update.html'
     success_url = reverse_lazy("ecm:notes")
 
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.item.pk}) 
+
 class NoteDeleteView(DeleteView):
     model = models.Note
-    success_url = reverse_lazy("ecm:notes")
+
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.item.pk}) 
 
 class DocumentCreateView(CreateView):
     template_name = 'ecm/document_create.html'
@@ -202,6 +345,9 @@ class DocumentCreateView(CreateView):
         if self.request.GET.get('item'):
             kwargs['ne'] = self.request.GET['item']
         return kwargs
+
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.item.pk}) 
 
 class DocumentView(ListView):
     template_name = 'ecm/documents.html'
@@ -215,9 +361,14 @@ class DocumentUpdateView(UpdateView):
     template_name='ecm/document_update.html'
     success_url = reverse_lazy("ecm:documents")
 
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.item.pk}) 
+
 class DocumentDeleteView(DeleteView):
     model = models.Document
-    success_url = reverse_lazy("ecm:documents")
+
+    def get_success_url(self):
+        return reverse('ecm:item_details',kwargs={'pk':self.object.item.pk}) 
 
 class ReportView(ListView):
     template_name = 'ecm/report.html'
@@ -235,7 +386,12 @@ def findReport(request):
     stream = request.GET.get('stream')
     if stream:
         report = report.filter(stream__stream = stream)
-    return render(request, 'ecm/find_report.html', {'report':report})
+        
+        for i in report:
+            can = models.Step.objects.filter(stream__stream = stream).count()
+            st = models.Activity.objects.filter(item__pk=i.pk, stream__stream=stream)
+
+    return render(request, 'ecm/find_report.html', {'report':report,'stream':stream,})
 
 def report_call(request):
     item = request.GET.get('item', None)

@@ -4,11 +4,16 @@ from . import views
 app_name = 'ecm'
 
 urlpatterns = [
-    path('',views.index, name='index'),
+    path('',views.StreamListView.as_view(), name='index'),
+
+    path('employees/',views.EmployeeListView.as_view(),name='employees'),
+    path('branches/',views.BranchListView.as_view(),name='branches'),
+    path('vendors/',views.VendorListView.as_view(),name='vendors'),
+
     path('items/',views.ItemView.as_view(),name='items'),
     path('item_create/',views.ItemCreateView.as_view(),name='item_create'),
     path('details/<str:pk>/',views.ItemDetailView.as_view(),name='item_details'),
-    path('item/update/<str:pk>/',views.ItemUpdateView.as_view(),name='item_update'),
+    path('item/update/<int:pk>/',views.ItemUpdateView.as_view(),name='item_update'),
     path('item/delete/<str:pk>/',views.ItemDeleteView.as_view(),name='item_delete'),
 
     path('streams/',views.StreamView.as_view(),name='streams'),
@@ -22,8 +27,12 @@ urlpatterns = [
     path('step/delete/<str:pk>/',views.StepDeleteView.as_view(),name='step_delete'),
 
     path('activities/',views.ActivityView.as_view(),name='activities'),
-    path('activity_create/',views.ActivityCreateView.as_view(),name='activity_create'),    
-    path('activity/update/<str:pk>/',views.ActivityUpdateView.as_view(),name='activity_update'),
+    path('activity_create/',views.ActivityCreateView.as_view(),name='activity_create'), 
+    path('activity_create2/',views.ActivityCreateView2.as_view(),name='activity_create2'),   
+    path('activity/update/<int:pk>/',views.ActivityUpdateView.as_view(),name='activity_update'),
+
+    path('activity/step_update2/<int:pk>/',views.ActivityUpdateView2.as_view(),name='activity_update2'),
+
     path('activity/delete/<str:pk>/',views.ActivityDeleteView.as_view(),name='activity_delete'),
 
     path('notes/',views.NoteView.as_view(),name='notes'),    

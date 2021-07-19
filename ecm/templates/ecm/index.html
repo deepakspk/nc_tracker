@@ -1,48 +1,22 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
     {% if user.is_authenticated %}
         <h3 > Dashboard</h3>
         <ol class="breadcrumb mb-4">
         </ol>
         <div class="row">
+            {% for i in streams%}
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-primary text-white mb-4">
-                    <div class="card-body">All Branches</div>
+                <div class="card dashboard-tile text-danger mb-4">
+                    <div class="card-body"> <strong> {{i.stream }} </strong></div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="#">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <a class="small text-primary stretched-link" href="{% url 'ecm:find_report' %}?stream={{i.stream}}&report_type=Simple+Report">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right text-primary"></i></div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-success text-white mb-4">
-                    <div class="card-body">All Good Branch</div>
-                    <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="#">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-warning text-white mb-4">
-                    <div class="card-body"> Action Required
-                         </div>
-                    <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="#">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-danger text-white mb-4">
-                    <div class="card-body">Having Issue</div>
-                    <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="#">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     {% else %}
     <div class="jumbotron mt-5">
@@ -51,11 +25,18 @@
         </div>
     </div>
     {% endif %}
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam cursus nisi a varius elementum. 
-        Fusce ac ante magna. Phasellus interdum maximus purus ut posuere. Aenean ante lectus, euismod vitae luctus et, vulputate ac libero.
-         Duis tincidunt dignissim auctor. Cras quis sagittis velit. Mauris ligula diam, interdum nec ex et, 
-         ultrices mattis orci. Praesent magna nibh, mattis vitae ligula ut, suscipit placerat urna.
-    </p>
+    <div class="bg-light rounded-3">
+        <div class="container-fluid py-5">
+          <a href="https://www.nepalcanmove.com">
+            <img class="mb-4 mt-2" src="{% static 'images/NCMLogo.png' %}" alt="NCMlogo" width="220">
+          </a>
+          <p class="col-md-8 mt-3">
+            Send & collect your packages like never before. Nepal Can Move's send
+            & collect service in Nepal works in an easy & intuitive way to make
+            sending & receiving packages fast & fun. We are the courier service in
+            Nepal that you can trust.
+          </p>
+        </div>
+      </div>
     
 {% endblock %}

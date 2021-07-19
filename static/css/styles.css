@@ -83,6 +83,19 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
 h1, .h1 {
   font-size: calc(1.375rem + 1.5vw);
 }
+.dashboard-tile {
+  margin-top: 15px;
+  margin-right: 15px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 15px;
+}
+.dashboard-tile a{
+  text-decoration: none;
+}
+.table a{
+  text-decoration: none;
+}
 @media (min-width: 1200px) {
   h1, .h1 {
     font-size: 2.5rem;
@@ -272,6 +285,10 @@ img,
 svg {
   vertical-align: middle;
   color: #ffffff;
+}
+.step-table tr td {
+  border: 0.5px solid black;
+  padding: 2px;
 }
 table svg {
   vertical-align: middle;
