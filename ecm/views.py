@@ -382,18 +382,25 @@ class ReportView(ListView):
         return context
 
 def findReport(request):
-    report = models.Item.objects.all()
     stream = request.GET.get('stream')
+    report_type = request.GET.get('report_type')
     count = []
-    if stream:
-        report = report.filter(stream__stream = stream)
-        
-        for i in report:
-            can = models.Step.objects.filter(stream__stream = stream).count()
-            stt = models.Activity.objects.filter(item__pk=i.pk, stream__stream=stream, status__status="Complete")
+    if report_type == "Simple Report":
+        report = models.Item.objects.filter(stream__stream = stream)
+        can = models.Step.objects.filter(stream__stream = stream).count()
+        for i in report:            
             st = models.Activity.objects.filter(item__pk=i.pk, stream__stream=stream, status__status="Complete").count()
-            count.append([stt])
-    return render(request, 'ecm/find_report.html', {'report':report,'stream':stream,'count':count})
+            per = (st/can)*100
+            count.append([i, st, per])
+        return render(request, 'ecm/find_report.html', {'report':report,'stream':stream,'count':count,'total_step':can})        
+    else:
+        report = models.Item.objects.filter(stream__stream = stream)
+        can = models.Step.objects.filter(stream__stream = stream)
+        for i in report:            
+            st = models.Activity.objects.filter(item__pk=i.pk, stream__stream=stream)
+            count.append([i, st])
+        return render(request, 'ecm/matrix_report.html', {'report':report,'stream':stream,'count':count,'can':can})
+    
 
 def report_call(request):
     item = request.GET.get('item', None)

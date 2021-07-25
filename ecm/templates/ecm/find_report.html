@@ -23,27 +23,27 @@
               <tr>
                 <th scope="col">SN.</th>
                 <th scope="col">Item</th>
-                <th scope="col">Dummy Progress</th>
+                <th scope="col">Progress</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
-            {% for i in report %}
+            {% for i in count %}
             <tr>
               <td scope="row">{{ forloop.counter }}</td>
               <td>
-                <a href="{% url 'ecm:item_details' pk=i.pk %}">{{i.name}}</a></a>
+                <a href="{% url 'ecm:item_details' pk=i.0.pk %}">{{i.0.name}}</a></a>
               </td>
               <td>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                  <div class="progress-bar" role="progressbar" style="width:{{i.2}}%" aria-valuenow="{{i.2}}" aria-valuemin="0" aria-valuemax="100">{{i.2}}%</div>
                 </div>
               </td>
               <td>              
-                <a href="{% url 'ecm:item_update' pk=i.pk %}"
+                <a href="{% url 'ecm:item_update' pk=i.0.pk %}"
                   ><i class="fas fa-edit fa-sm">  </i></a
                   > | 
-                <a href="{% url 'ecm:item_delete' pk=i.pk %}">
+                <a href="{% url 'ecm:item_delete' pk=i.0.pk %}">
                   <i class="fas fa-trash-alt fa-sm"></i
                 ></a>
               </td>

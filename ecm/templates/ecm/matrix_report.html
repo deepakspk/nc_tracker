@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="breadcrumb bg-light">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item mt-2">
+                <a href="{% url 'ecm:index' %}">
+                  <i class="fas fa-chevron-left text-danger"></i> Dashboard
+                </a>
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <h4 class="text-danger mb-5">{{stream}} - Matrix Report</h4>
+        <table class="table">
+            <thead>                
+              <tr>
+                <th>SN.</th>
+                <th>Branch</th>
+                {% for i in can %}
+                    <th>{{i.step}}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+            {% for i in count %}
+            <tr>
+              <td scope="row">{{ forloop.counter }}</td>
+              <td>
+                <a href="{% url 'ecm:item_details' pk=i.0.pk %}">{{i.0.name}}</a></a>
+              </td>
+              <td> </td>
+              <td></td>              
+            </tr>    
+            {% endfor %}
+          </tbody>
+          </table>
+      </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $('#table_id').DataTable();
+  });
+</script>
+{% endblock %}
