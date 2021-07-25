@@ -4613,7 +4613,11 @@ textarea.form-control-lg {
 .breadcrumb-item.active {
   color: #6c757d;
 }
-
+.breadcrumb a{
+  text-decoration: none;
+  color: #6c757d;
+  margin-left: 1rem;
+}
 .pagination, .dataTable-pagination ul {
   display: flex;
   padding-left: 0;

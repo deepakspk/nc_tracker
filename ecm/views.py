@@ -384,14 +384,16 @@ class ReportView(ListView):
 def findReport(request):
     report = models.Item.objects.all()
     stream = request.GET.get('stream')
+    count = []
     if stream:
         report = report.filter(stream__stream = stream)
         
         for i in report:
             can = models.Step.objects.filter(stream__stream = stream).count()
-            st = models.Activity.objects.filter(item__pk=i.pk, stream__stream=stream)
-
-    return render(request, 'ecm/find_report.html', {'report':report,'stream':stream,})
+            stt = models.Activity.objects.filter(item__pk=i.pk, stream__stream=stream, status__status="Complete")
+            st = models.Activity.objects.filter(item__pk=i.pk, stream__stream=stream, status__status="Complete").count()
+            count.append([stt])
+    return render(request, 'ecm/find_report.html', {'report':report,'stream':stream,'count':count})
 
 def report_call(request):
     item = request.GET.get('item', None)
@@ -399,6 +401,7 @@ def report_call(request):
     stream = models.Stream.objects.filter(pk=obj.stream.pk)
     qs = serializers.serialize('json',stream)
     return HttpResponse(qs)
+
 
 def report_step(request):
     stream = request.GET.get('stream', None)

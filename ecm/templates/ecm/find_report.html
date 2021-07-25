@@ -3,9 +3,19 @@
 
 <div class="jumbotron">
     <div class="row">
-
       <div class="col-sm-12">
-        <h4 class="text-danger mb-5">Report</h4>
+        <div class="breadcrumb bg-light">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item mt-2">
+                <a href="{% url 'ecm:index' %}">
+                  <i class="fas fa-chevron-left text-danger"></i> Dashboard
+                </a>
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <h4 class="text-danger mb-5">{{stream}}</h4>
         <a class="btn btn-outline-info btn-sm mb-3" href="{% url 'ecm:item_create' %}?stream={{stream}}" role="button"><i class="fas fa-plus"> </i> Add new Item</a>
         <h5 class="text-danger"></h5>
           <table class="table table-hover" id="table_id" >
