@@ -21,6 +21,7 @@
           <table class="table table-hover" id="table_id" >
             <thead>
               <tr>
+                <th scope="col">SN.</th>
                 <th scope="col">Item</th>
                 <th scope="col">Dummy Progress</th>
                 <th scope="col">Action</th>
@@ -29,6 +30,7 @@
             <tbody>
             {% for i in report %}
             <tr>
+              <td scope="row">{{ forloop.counter }}</td>
               <td>
                 <a href="{% url 'ecm:item_details' pk=i.pk %}">{{i.name}}</a></a>
               </td>
