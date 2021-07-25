@@ -389,7 +389,7 @@ def findReport(request):
         report = models.Item.objects.filter(stream__stream = stream)
         can = models.Step.objects.filter(stream__stream = stream).count()
         for i in report:            
-            st = models.Activity.objects.filter(item__pk=i.pk, stream__stream=stream, status__status="Complete").count()
+            st = models.Activity.objects.filter(item__pk=i.pk, stream__stream=stream, status__status="COMPLETED").count()
             per = (st/can)*100
             count.append([i, st, per])
         return render(request, 'ecm/find_report.html', {'report':report,'stream':stream,'count':count,'total_step':can})        
