@@ -394,13 +394,18 @@ def findReport(request):
             count.append([i, st, per])
         return render(request, 'ecm/find_report.html', {'report':report,'stream':stream,'count':count,'total_step':can})        
     else:
-        report = models.Item.objects.filter(stream__stream = stream)
-        can = models.Step.objects.filter(stream__stream = stream)
-        for i in report:            
-            st = models.Activity.objects.filter(item__pk=i.pk, stream__stream=stream)
-            count.append([i, st])
-        return render(request, 'ecm/matrix_report.html', {'report':report,'stream':stream,'count':count,'can':can})
+        can = models.Step.objects.filter(stream__stream = stream) 
+        for i in models.Item.objects.filter(stream__stream = stream):
+            ac = [] 
+            for s in can:            
+                act = models.Activity.objects.filter(step = s, item__pk=i.pk).order_by("-id")
+                if act:
+                    ac.append(act[0])
+            count.append([i, ac])
+        return render(request, 'ecm/matrix_report.html', {'step':can, 'count':count})
     
+
+
 
 def report_call(request):
     item = request.GET.get('item', None)
