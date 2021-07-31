@@ -16,7 +16,7 @@
           </nav>
         </div>
         <h4 class="text-danger mb-5">{{stream}} - Matrix Report</h4>
-        <table class="matrixtable">
+        <table id="matrix-table">
             <thead>                
               <tr>
                 <th>SN.</th>
@@ -34,11 +34,20 @@
                 <a href="{% url 'ecm:item_details' pk=i.0.pk %}">{{i.0.name}}</a></a>
               </td>
                 {% for j in i.1 %}
-                    {% if j.status == "COMPLETED" %} 
-                      <td>{{j.status}}</td>
+
+                    {% if j.status.status == 'COMPLETED' %} 
+                      <td class="text-success"><strong>{{j.status}}</strong></td>
+
+                    {% elif j.status.status == "IN PROGRESS" %}
+                      <td class="text-warning"><strong>{{j.status}}</strong></td>
+
+                    {% elif j.status == "" %}
+                      <td class="text-warning"><strong> PENDING </strong></td>
+
                     {% else %}
-                      <td class="text-danger">{{j.status}}</td>
+                      <td class="text-danger"><strong>{{j.status}}</strong></td>                      
                     {% endif %}
+
                 {% endfor %}  
             </tr>    
             {% endfor %}

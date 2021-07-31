@@ -400,9 +400,9 @@ def findReport(request):
             for s in can:            
                 act = models.Activity.objects.filter(step = s, item__pk=i.pk).order_by("-id")
                 if act:
-                    ac.append(act[0])
+                    ac.append(act[0])                
             count.append([i, ac])
-        return render(request, 'ecm/matrix_report.html', {'step':can, 'count':count})
+        return render(request, 'ecm/matrix_report.html', {'stream': stream, 'step':can, 'count':count})
     
 
 
