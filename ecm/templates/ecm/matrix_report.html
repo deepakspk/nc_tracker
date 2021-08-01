@@ -35,17 +35,17 @@
               </td>
                 {% for j in i.1 %}
 
-                    {% if j.status.status == 'COMPLETED' %} 
-                      <td class="text-success"><strong>{{j.status}}</strong></td>
+                    {% if j == 'COMPLETED' %} 
+                      <td class="text-success"><strong>{{j}}</strong></td>
 
-                    {% elif j.status.status == "IN PROGRESS" %}
-                      <td class="text-warning"><strong>{{j.status}}</strong></td>
+                    {% elif j == "IN PROGRESS" %}
+                      <td class="text-warning"><strong>{{j}}</strong></td>
 
-                    {% elif j.status == "" %}
+                    {% elif j == "" %}
                       <td class="text-warning"><strong> PENDING </strong></td>
 
                     {% else %}
-                      <td class="text-danger"><strong>{{j.status}}</strong></td>                      
+                      <td class="text-danger"><strong>{{j}}</strong></td>                      
                     {% endif %}
 
                 {% endfor %}  
