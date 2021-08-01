@@ -11,9 +11,8 @@
   type="text/css"
 />
 {% endblock %}
-<div class="jumbotron">
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-4">
         <h4 class="text-danger mb-2">Add User Group</h4>
         <form action="{% url 'ecm:usergroups_create' %}" method="POST">
           {% csrf_token %} {{form.as_p}}
@@ -60,7 +59,6 @@
         </table>
       </div>
     </div>
-  </div>
 {% endblock %}
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>

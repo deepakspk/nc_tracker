@@ -2,19 +2,29 @@
 {% block content %}
 
 <div class="jumbotron">
+  <div class="breadcrumb">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item mt-2">
+          <a href="{% url 'ecm:index' %}">
+            <i class="fas fa-chevron-left text-danger"></i> Dashboard
+          </a>
+        </li>
+      </ol>
+    </nav>
+  </div>
+  
     <div class="row">
-
-      <div class="">
         <h4 class="text-danger mb-5">Generate Report</h4>
-
-        <div id="report-form" class="mb-2">
-          
+        <div id="report-form" class="mb-2"> 
           <form
             action="{% url 'ecm:find_report' %}"
             method="get"
-          >           
-
+          >   
             <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Select Stream</label>
+              </div>
               <select class="custom-select"  
                 name="stream"
                 id = "stream"
@@ -24,7 +34,14 @@
                 {% endfor %}
               </select>
             </div>
+
+            
+
+
             <div class="input-group mb-2">
+              <div class="input-group-prepend">
+              <label class="input-group-text" for="inputGroupSelect01">Select Report </label>
+            </div>
             <select class="custom-select"
               name="report_type"
               id = "report_type"
@@ -43,7 +60,6 @@
             </button>
           </form>
         </div>
-      </div>
       </div>
       </div>
 {% endblock %}
