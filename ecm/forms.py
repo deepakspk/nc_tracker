@@ -43,7 +43,7 @@ class StepForm(ModelForm):
 class ActivityForm(ModelForm):
     class Meta:
         model= Activity
-        exclude = ['item','stream','step',]
+        exclude = ['item','stream','step','added_by']
         # fields = '__all__'
         widgets = {
             'date':forms.DateInput(attrs={'type':'date'})
@@ -77,7 +77,7 @@ class ActivityForm(ModelForm):
 class ActivityForm2(ModelForm):
     class Meta:
         model= Activity
-        exclude = ['item','stream','step',]
+        exclude = ['item','stream','step','added_by']
         widgets = {
             'date':forms.DateInput(attrs={'type':'date'})
         }
@@ -99,7 +99,7 @@ class ActivityForm2(ModelForm):
 class ActivityForm3(ModelForm):
     class Meta:
         model= Activity
-        exclude = ['item','stream',]
+        exclude = ['item','stream','added_by']
         widgets = {
             'date':forms.DateInput(attrs={'type':'date'})
         }

@@ -169,6 +169,10 @@ class ActivityCreateView(CreateView):
         return context
 
     def form_valid(self, form_class):
+        form_class.instance.date = datetime.date.today()
+        emp = Admin.objects.get(user=self.request.user)
+        form_class.instance.added_by = emp
+        
         if self.request.GET.get('item'):
             item = models.Item.objects.get(pk=self.request.GET['item'])
             form_class.instance.item = item
@@ -208,6 +212,10 @@ class ActivityCreateView2(CreateView):
         return context
 
     def form_valid(self, form_class):
+        form_class.instance.date = datetime.date.today()
+        emp = Admin.objects.get(user=self.request.user)
+        form_class.instance.added_by = emp
+
         if self.request.GET.get('item'):
             item = models.Item.objects.get(pk=self.request.GET['item'])
             form_class.instance.item = item

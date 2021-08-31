@@ -49,6 +49,7 @@ class Activity(models.Model):
     step            = models.ForeignKey(Step, on_delete= models.CASCADE,related_name='act_step')
     status           = models.ForeignKey(Status, on_delete= models.CASCADE,related_name='act_status')
     note            = models.TextField(max_length=600, null=True, blank=True)
+    added_by        = models.ForeignKey(Admin, on_delete= models.CASCADE,related_name='act_added',null=True, blank=True)
     def __str__(self):
         return str(self.item.name)
 

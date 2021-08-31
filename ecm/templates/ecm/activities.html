@@ -25,6 +25,7 @@
                 <th scope="col">Status</th>
                 <th scope="col">Date</th>
                 <th scope="col">Note</th>
+                <th scope="col">Added by</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -37,6 +38,7 @@
                 <td> {{i.status}}</td>
                 <td> {{i.date}}</td>
                 <td> {{i.note}}</td>
+                <td> {{i.added_by}}</td>
                 <td> 
                   <a href="{% url 'ecm:activity_update' pk=i.pk  %}"><i class="fas fa-edit fa-sm">  </i></a
                     > | </a>
